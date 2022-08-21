@@ -14,13 +14,13 @@ import math
 # nb_elevators (ne): number of elevators
 nf, width, nr, exf, exp, ntc, nae, ne = [int(i) for i in input().split()]
 # elevators (e): elevators array
-e = []
+e = {}
 for i in range(ne):
     # elevator_floor(ef): floor on which this elevator is found
     # elevator_pos(ep): position of the elevator on its floor
     ef, ep = [int(j) for j in input().split()]
-    e.append([ef,ep])    
-e = sorted(e)
+    e[ef] = ep    
+#e = sorted(e)
 
 init_pos = 0
 
@@ -29,23 +29,20 @@ while True:
     inputs = input().split()
     cf = int(inputs[0])  # floor of the leading clone
     cp = int(inputs[1])  # position of the leading clone on its floor
-#    direction = inputs[2]  # direction of the leading clone: LEFT or RIGHT
+    direction = inputs[2]  # direction of the leading clone: LEFT or RIGHT
 
     # Write an action using print
     # To debug: print("Debug messages...", file=sys.stderr, flush=True)
 
     # action: WAIT or BLOCK
-    if cp in [0,width-1]:
+    if cf==exf:
+        target = exp 
+    elif cf in e:  
+        target = e[cf]
+
+    if direction == 'RIGHT' and cp > target:
+        print("BLOCK")
+    elif direction == 'LEFT' and cp < target:
         print("BLOCK")
     else:
-        if cf==0:
-            print("WAIT")
-        else: 
-            currepos = exp if cf==nf-1 else e[cf][1]
-            lastepos = e[cf-1][1]
-            if currepos < lastepos and cp>lastepos: #belik kiri
-                print("BLOCK")
-            elif currepos > lastepos and cp<lastepos: #belik kanan
-                print("BLOCK")
-            else:
-                print("WAIT")
+        print("WAIT")
